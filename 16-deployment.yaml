@@ -8,7 +8,7 @@ metadata:
     project: roboshop
     app: nginx
 spec:
-  replicas: 2
+  replicas: 3
   # These are the labels replica set use to create pod replicas, this should match pod labels
   selector:
     matchLabels:
@@ -27,3 +27,20 @@ spec:
       - name: nginx
         #image: nginx:stable-perl
         image: nginx:latest # Image changed from stable-perl to latest
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-svc
+  labels:
+    purpose: service-demo
+spec:
+  selector:
+    purpose: deployment-demo
+    project: roboshop
+    app: nginx
+  ports:
+    - protocol: TCP
+      port: 80 # service port
+      targetPort: 80 # container port
